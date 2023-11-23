@@ -1,0 +1,93 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康観察</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+</head>
+<body>
+    <p class="text-center">【健康観察フォーム】</p>
+    <p class="text-center">毎朝6:30～7:00に記入をして、送信してください</p>
+    <form class="w-75 mx-auto">
+        <p class="mt-3">氏名（例：やまだ　たろう）</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="name" required>
+        </div>
+        <p class="mt-3">出席番号</p>
+        <div>
+            <input type = "number" name="bangou" min="1" max="35" required>                                                                                                                      
+        </div>
+        <p class="mt-3">今朝の体温</p>
+        <div>
+            <input type = "number" name="temperature" step="0.1" min="33.0" max="40.0" value="36.5" required>℃                                                                                                                     
+        </div>
+        <p class="mt-3">かぜの症状（せき、のどの痛み、頭痛やだるさ、味覚・嗅覚の異常など）がある場合は記入してください</p>
+        <p class="mt-n1">※症状がなければ、「なし」と記入してください</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="shushoujou" required>
+        </div>
+        <div>
+        <p class="mt-3"　required>家族に発熱などの症状のある人がいる</p>
+        <input id="radio-a" type="radio" name="family" value="はい" checked><label for="radio-a">はい</label>
+        <input id="radio-b" type="radio" name="family" value="いいえ"><label for="radio-b">いいえ</label>
+    </div>
+       
+        <input type="submit" class="mt-4 btn btn-primary" value="連絡する">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            const liffId = "XXXXXXXXXX-XXXXXXXX";
+            initializeLiff(liffId);
+        })
+
+        function initializeLiff(liffId) {
+            liff.init({
+                liffId: liffId
+            }).then(() => {
+                initializeApp();
+            }).catch((err) => {
+                console.log('LIFF Initialization failed ', err);
+            });
+        }
+
+        function sendText(text) {
+            liff.sendMessages([{
+                'type': 'text',
+                'text': text
+            }]).then(function () {
+                liff.closeWindow();
+            }).catch(function (error) {
+                window.alert('Failed to send message ' + error);
+            });
+        }
+
+        const params = (new URL(document.location)).searchParams;
+        const key = params.get('key');
+
+        $(function () {
+            $('form').submit(function () {
+                const name    = $('input[name="name"]').val();
+                const bangou = $('input[name="bangou"]').val();
+                const temperature  = $('input[name="temperature"]').val();
+                const shushoujou  = $('input[name="shushoujou"]').val();
+                const family = $('input[name="family"]').val();
+                const msg = `${name}\n${bangou}\n${temperature}\n${shushoujou}\n${family}`;
+                sendText(msg);
+                return false;
+            });
+        });
+
+    </script>
+
+</body>
+</html>
