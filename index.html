@@ -23,27 +23,18 @@ var week_ja= new Array("日","月","火","水","木","金","土");
 //年・月・日・曜日を書き出す
 document.write(year+"年"+month+"月"+day+"日 "+week_ja[week]+"曜日");</script>
     <form class="w-75 mx-auto">
-        <p class="mt-3">氏名</p>
+        <p class="mt-3">お名前</p>
         <div>
             <input class="form-control w-100 mt-1" name="name" placeholder="" required>
         </div>
-        <p class="mt-3">診察券番号(半角数字 不明の場合は"0")</p>
+        <p class="mt-3">お弁当の個数</p>
         <div>
-            <input class="form-control w-100 mt-1" name="bangou" required>
+            <input class="form-control w-100 mt-1" name="count" required>
         </div>
-        <p class="mt-3">一番お困りのことは?</p>
+        <p class="mt-3">お弁当のメニュー</p>
         <div>
-            <input class="form-control w-100 mt-1" name="shushoujou" required>
+            <input class="form-control w-100 mt-1" name="menu" required>
         </div>
-        <p class="mt-3">いつからどのような様子ですか?</p>
-        <div>
-            <input class="form-control w-100 mt-1" name="keika" required>
-        </div>
-        <p class="mt-3">37.5度以上の発熱の有無("はい" か "いいえ")</p>
-        <div>
-            <input class="form-control w-100 mt-1" name="hatunetu" required>
-        </div>
-        <input type="submit" class="mt-4 btn btn-primary" value="送信">
     </form>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -85,11 +76,9 @@ document.write(year+"年"+month+"月"+day+"日 "+week_ja[week]+"曜日");</scrip
         $(function () {
             $('form').submit(function () {
                 const name    = $('input[name="name"]').val();
-                const bangou = $('input[name="bangou"]').val();
-                const shushoujou  = $('input[name="shushoujou"]').val();
-                const keika  = $('input[name="keika"]').val();
-                const hatunetu = $('input[name="hatunetu"]').val();
-                const msg = `${name}\n${bangou}\n${shushoujou}\n${keika}\n${hatunetu}`;
+                const bangou = $('input[name="count"]').val();
+                const shushoujou  = $('input[name="menu"]').val();
+                const msg = `${month}月${week}日(${day}) ${count}個 「${menu}」を受注完了いたしました`;
                 sendText(msg);
                 return false;
             });
