@@ -78,8 +78,8 @@ document.write(year+"年"+month+"月"+day+"日 "+week_ja[week]+"曜日");</scrip
         $(function () {
             $('form').submit(function () {
                 //const name    = $('input[name="name"]').val();
-                //const count = $('input[name="count"]').val();
-                //const menu  = $('input[name="menu"]').val();
+                const count = $('input[name="count"]').val();
+                const menu  = $('input[name="menu"]').val();
                 const msg = `${month}月${day}日(${week_ja[week]})\n${count}個\n「${menu}」`;
                 sendText(msg);
                 return false;
