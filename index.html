@@ -80,7 +80,8 @@ document.write(year+"年"+month+"月"+day+"日 "+week_ja[week]+"曜日");</scrip
                 const name    = $('input[name="name"]').val();
                 const bangou = $('input[name="count"]').val();
                 const shushoujou  = $('input[name="menu"]').val();
-                const msg = `${month}月\n${week}日\n(${day})\n${count}個\n「${menu}」を受注完了いたしました`;
+                //const msg = `${month}月\n${week}日\n(${day})\n${count}個\n「${menu}」を受注完了いたしました`;
+                const msg = `${name}\n${count}\n${menu}`;
                 sendText(msg);
                 return false;
             });
