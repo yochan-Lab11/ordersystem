@@ -1,4 +1,4 @@
-function onSubmit(){
+/*function onSubmit(){
     const text = document.getElementById('answer').value;
 
     const msg = "【送信内容】\n" + text;
@@ -6,7 +6,7 @@ function onSubmit(){
     sendText(msg);
 
     return false;
-    }
+    }*/
 $(document).ready(function () {
     // liffId: LIFF URL "https://liff.line.me/xxx"のxxxに該当する箇所
     // LINE DevelopersのLIFF画面より確認可能
