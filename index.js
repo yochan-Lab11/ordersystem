@@ -5,6 +5,8 @@
     sendText(msg);
     return false;
 }*/
+const params = (new URL(document.location)).searchParams;
+const key = params.get('key');
 
 $(function () {
             $('form').submit(function () {
