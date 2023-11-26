@@ -47,7 +47,16 @@ document.write(year+"年"+month+"月"+day+"日 "+week_ja[week]+"曜日");</scrip
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <script>
+        
+function onSubmit(){
+    const text = document.getElementById('answer').value;
 
+    const msg = "【送信内容】\n" + text;
+    console.log(msg);
+    sendText(msg);
+
+    return false;
+    }
         $(document).ready(function () {
     // liffId: LIFF URL "https://liff.line.me/xxx"のxxxに該当する箇所
     // LINE DevelopersのLIFF画面より確認可能
@@ -108,17 +117,7 @@ function shareTargetPicker(text) {
         window.alert('Failed to send message ' + error);
     });
 }
-function onSubmit(){
-    const text = document.getElementById('answer').value;
-
-    const msg = "【送信内容】\n" + text;
-    console.log(msg);
-    sendText(msg);
-
-    return false;
-    }
-
-    </script>
+</script>
 
 </body>
 </html>
