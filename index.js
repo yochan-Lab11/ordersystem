@@ -11,7 +11,7 @@ $(function () {
                 const name    = $('input[name="name"]').val();
                 const bangou = $('input[name="count"]').val();
                 const shushoujou  = $('input[name="menu"]').val();
-                const msg = `${name}\n${bangou}\n${shushoujou}\n${keika}\n${hatunetu}`;
+                const msg = `${name}\n${count}\n${menu}\n`;
                 sendText(msg);
                 return false;
             });
