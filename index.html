@@ -64,8 +64,8 @@
         $(function () {
             $('form').submit(function () {
                 const name    = $('input[name="name"]').val();
-                const udetate = $('input[name="count"]').val();
-                const fukkin  = $('input[name="menu"]').val();
+                const count = $('input[name="count"]').val();
+                const menu  = $('input[name="menu"]').val();
                 const msg = `${name}\n${count}\n${menu}`;
                 sendText(msg);
                 return false;
