@@ -1,12 +1,10 @@
-/*function onSubmit(){
+function onSubmit(){
     const text = document.getElementById('answer').value;
-
     const msg = "【送信内容】\n" + text;
     console.log(msg);
     sendText(msg);
-
     return false;
-    }*/
+    }
 $(document).ready(function () {
     // liffId: LIFF URL "https://liff.line.me/xxx"のxxxに該当する箇所
     // LINE DevelopersのLIFF画面より確認可能
@@ -67,14 +65,3 @@ function shareTargetPicker(text) {
         window.alert('Failed to send message ' + error);
     });
 }
-
-$(function () {
-    $('form').submit(function () {
-    const text = document.getElementById('answer').value;
-    const msg = "【送信内容】\n" + text;
-    console.log(msg);
-    sendText(msg);
-
-    return false;
-    });
-});
