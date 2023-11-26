@@ -9,8 +9,8 @@
 $(function () {
             $('form').submit(function () {
                 const name    = $('input[name="name"]').val();
-                const bangou = $('input[name="bangou"]').val();
-                const shushoujou  = $('input[name="shushoujou"]').val();
+                const bangou = $('input[name="count"]').val();
+                const shushoujou  = $('input[name="bento"]').val();
                 const keika  = $('input[name="keika"]').val();
                 const hatunetu = $('input[name="hatunetu"]').val();
                 const msg = `${name}\n${bangou}\n${shushoujou}\n${keika}\n${hatunetu}`;
