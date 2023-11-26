@@ -55,6 +55,6 @@ function shareTargetPicker(text) {
         'text': text
     }]).catch((error) => {
         console.log(error);
-        window.alert('Failed to send message ' + error);
+        window.alert('Failed to send message ' + error + text);
     });
 }
