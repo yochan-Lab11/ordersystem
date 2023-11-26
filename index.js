@@ -4,4 +4,4 @@ function onSubmit(){
     console.log(msg);
     sendText(msg);
     return false;
-    }
+}
