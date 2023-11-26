@@ -1,4 +1,4 @@
-function onSubmit(){
+function onSubmit() {
     const text1 = document.getElementById('answer1').value;
     const text2 = document.getElementById('answer2').value;
     const text3 = document.getElementById('answer3').value;
