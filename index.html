@@ -32,14 +32,41 @@
             vertical-align: top;
         }
 
-        .submit {
-            text-align: center;
-        }
-        .submit-btn {
+        .button-area {
             width: 85%;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .button-group > * {
+            flex: 1;
+        }
+        
+        .confirm-btn {
             display: inline-block;
             background-color: #2daaff;
             border-color: #2daaff;
+        }
+
+        .back-btn {
+            display: inline-block;
+            color: #2daaff;
+            border-color: #2daaff;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            background-color: #2daaff;
+            border-color: #2daaff;
+        }
+
+        .hide {
+            display: none;
         }
     </style>
 </head>
@@ -59,12 +86,18 @@
             <div>
                 <input class="form-control w-100 mt-1" name="menu" required>
             </div>
-            <p class="mt-3 order-item">その他ご要望</p>
+            <p class="mt-3 order-item">その他要望</p>
             <div>
-                <input class="form-control w-100 mt-1" name="requirement" placeholder="「12:30までに配達希望」など">
+                <input class="form-control w-100 mt-1" name="request" placeholder="「12:30までに配達希望」など">
             </div>
-            <section class="submit">
-                <input type="submit" class="mt-5 btn btn-primary submit-btn" value="送信">
+            <section class="button-area mt-5">
+                <div class="button-group confirm-area">
+                    <button type="button" class="btn btn-primary confirm-btn">確認</button>
+                </div>
+                <div class="button-group submit-area hide">
+                    <button type="button" class="btn btn-outline-primary back-btn">入力画面に戻る</button>
+                    <button type="submit" class="btn btn-primary submitbtn">送信</button>
+                </div>
             </section>
         </form>
     </section>
@@ -77,7 +110,7 @@
     <script>
 
         $(document).ready(function () {
-            const liffId = "2002180924-Mkw799g3";
+            const liffId = "2001825075-pmjJnbaR";
             initializeLiff(liffId);
         })
 
@@ -102,21 +135,63 @@
             });
         }
 
-        const params = (new URL(document.location)).searchParams;
-        const key = params.get('key');
-
-        $(function () {
-            $('form').submit(function () {
-                const name    = $('input[name="name"]').val();
-                const count = $('input[name="count"]').val();
-                const menu  = $('input[name="menu"]').val();
-                const require  = $('input[name="requirement"]').val();
-                const msg = `${name}\n${count}\n${menu}\n${require}`;
-                sendText(msg);
-                return false;
+        function enableForm() {
+            $("form input,textarea").each(function () {
+                $(this).prop('disabled', false);  
             });
+        }
+
+        function disableForm() {
+            $("form input,textarea").each(function () {
+                $(this).prop('disabled', true);  
+            });
+        }
+
+        $(".confirm-btn").on("click", () => {
+            let canSubmit = true;
+            $("form input,textarea").filter("[required]:visible").each(function() {
+                // Clear All validations
+                $(this).removeClass('is-invalid');
+                $(this).nextAll('.invalid-feedback').remove();
+
+                if($(this).val() == '') {
+                    canSubmit = false;
+                    $(this).addClass('is-invalid');
+                    $(this).parent().append(`<div class="invalid-feedback">未入力です。</div>`);
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $(this).nextAll('.invalid-feedback').remove();
+                }
+            });
+
+            if (canSubmit) {
+                $(".confirm-area").addClass("hide");
+                $(".submit-area").removeClass("hide");
+
+                disableForm();
+            }
         });
 
+        $(".back-btn").on("click", () => {
+            $(".confirm-area").removeClass("hide");
+            $(".submit-area").addClass("hide");
+
+            enableForm();
+        });
+
+        $('form').on("submit", function () {
+            const name    = $('input[name="name"]').val();
+            const count = $('input[name="count"]').val();
+            const menu  = $('input[name="menu"]').val();
+            const request  = $('textarea[name="request"]').val();
+            const msg = [name, count, menu, request].join('\n');
+            sendText(msg);
+
+            $(".confirm-area").removeClass("hide");
+            $(".submit-area").addClass("hide");
+            enableForm();
+            window.alert("ご注文ありがとうございました");
+        });
     </script>
 
 </body>
