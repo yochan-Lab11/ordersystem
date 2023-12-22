@@ -138,15 +138,20 @@
                 shareTargetPicker(text);
             } else {
                 liff.sendMessages([{
-                    'type': 'text',
-                    'text': text
-                }]).then(function () {
-                    liff.closeWindow();
-                }).catch(function (error) {
-                    window.alert('Failed to send message ' + error);
-                });
+                    sendMessages(text);
         }
-
+        // LINEトーク画面上でメッセージ送信
+        function sendMessages(text) {
+            console.log('in sendMessages()');
+            liff.sendMessages([{
+                'type': 'text',
+                'text': text
+            }]).then(function () {
+                liff.closeWindow();
+            }).catch(function (error) {
+                window.alert('Failed to send message ' + error);
+            });
+}
         function enableForm() {
             $("form input,textarea").each(function () {
                 $(this).prop('disabled', false);  
