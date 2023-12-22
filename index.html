@@ -184,13 +184,14 @@
             const count = $('input[name="count"]').val();
             const menu  = $('input[name="menu"]').val();
             const request  = $('textarea[name="request"]').val();
-            const msg = `${name}\n${count}\n${menu}\n${request}`;
+            const msg = [name, count, menu, request].join('\n');
             sendText(msg);
 
             $(".confirm-area").removeClass("hide");
             $(".submit-area").addClass("hide");
             enableForm();
             window.alert("ご注文ありがとうございました");
+            return false;
         });
     </script>
 
