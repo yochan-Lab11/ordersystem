@@ -134,14 +134,17 @@
 }
 
         function sendText(text) {
-            liff.sendMessages([{
-                'type': 'text',
-                'text': text
-            }]).then(function () {
-                liff.closeWindow();
-            }).catch(function (error) {
-                window.alert('Failed to send message ' + error);
-            });
+            if ((!liff.isInClient()) {
+                shareTargetPicker(text);
+            } else {
+                liff.sendMessages([{
+                    'type': 'text',
+                    'text': text
+                }]).then(function () {
+                    liff.closeWindow();
+                }).catch(function (error) {
+                    window.alert('Failed to send message ' + error);
+                });
         }
 
         function enableForm() {
@@ -155,7 +158,16 @@
                 $(this).prop('disabled', true);  
             });
         }
-
+        function shareTargetPicker(text) {
+            console.log('in shareTargetPicker');
+            liff.shareTargetPicker([{
+                'type': 'text',
+                'text': text
+            }]).catch((error) => {
+                console.log(error);
+                window.alert('Failed to send message ' + error);
+            });
+        }
         $(".confirm-btn").on("click", () => {
             let canSubmit = true;
             $("form input,textarea").filter("[required]:visible").each(function() {
