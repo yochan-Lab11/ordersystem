@@ -108,38 +108,42 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <script>
-
+        
         $(document).ready(function () {
-            const liffId = "2001825075-pmjJnbaR";
-            initializeLiff(liffId);
-        })
-
+        // liffId: LIFF URL "https://liff.line.me/xxx"のxxxに該当する箇所
+        // LINE DevelopersのLIFF画面より確認可能
+        var liffId = "2001825075-pmjJnbaR";
+        console.log(`init liff, ID : ${liffId}`);
+        initializeLiff(liffId);
+    })
+    
         function initializeLiff(liffId) {
             liff
-        .init({
-            liffId: liffId
-        })
-        .then(() => {
-            // Webブラウザからアクセスされた場合は、LINEにログインする
-            if (!liff.isInClient() && !liff.isLoggedIn()) {
-                window.alert("LINEアカウントにログインしてください。");
-                liff.login({redirectUri: location.href});
-            }else{
-                console.log('Login Success');
-            }
-        })
-        .catch((err) => {
-            console.log('LIFF Initialization failed ', err);
-        });
-}
-
+            .init({
+                liffId: liffId
+            })
+            .then(() => {
+                // Webブラウザからアクセスされた場合は、LINEにログインする
+                if (!liff.isInClient() && !liff.isLoggedIn()) {
+                    window.alert("LINEアカウントにログインしてください。");
+                    liff.login({redirectUri: location.href});
+                }else{
+                    console.log('Login Success');
+                }
+            })
+            .catch((err) => {
+                console.log('LIFF Initialization failed ', err);
+            });
+        }
         function sendText(text) {
-            if ((!liff.isInClient()) {
+            if (!liff.isInClient()) {
                 shareTargetPicker(text);
             } else {
-                liff.sendMessages([{
-                    sendMessages(text);
+                sendMessages(text);
+            }
         }
+        
+        
         // LINEトーク画面上でメッセージ送信
         function sendMessages(text) {
             console.log('in sendMessages()');
@@ -151,7 +155,19 @@
             }).catch(function (error) {
                 window.alert('Failed to send message ' + error);
             });
-}
+        }
+        
+        // Webブラウザからメッセージ送信
+        function shareTargetPicker(text) {
+            console.log('in shareTargetPicker');
+            liff.shareTargetPicker([{
+                'type': 'text',
+                'text': text
+            }]).catch((error) => {
+                console.log(error);
+                window.alert('Failed to send message ' + error);
+            });
+        }
         function enableForm() {
             $("form input,textarea").each(function () {
                 $(this).prop('disabled', false);  
@@ -163,16 +179,7 @@
                 $(this).prop('disabled', true);  
             });
         }
-        function shareTargetPicker(text) {
-            console.log('in shareTargetPicker');
-            liff.shareTargetPicker([{
-                'type': 'text',
-                'text': text
-            }]).catch((error) => {
-                console.log(error);
-                window.alert('Failed to send message ' + error);
-            });
-        }
+            
         $(".confirm-btn").on("click", () => {
             let canSubmit = true;
             $("form input,textarea").filter("[required]:visible").each(function() {
