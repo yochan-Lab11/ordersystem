@@ -6,24 +6,68 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+    <style>
+        .container {
+            max-width: 640px;
+            width: 100vw;
+        }
+
+        .order-item {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        .order-item.required:after {
+            background-color: #db4f43;
+            border-radius: 3px;
+            content: "必須";
+            color: #ffffff;
+            font-weight: normal;
+            display: inline-block;
+            margin-left: 5px;
+            padding-right: 5px;
+            padding-left: 5px;
+            line-height: 20px;
+            font-size: 11px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .submit {
+            text-align: center;
+        }
+        .submit-btn {
+            width: 85%;
+            display: inline-block;
+            background-color: #2daaff;
+            border-color: #2daaff;
+        }
+    </style>
 </head>
 <body>
 
-    <form class="w-75 mx-auto">
-        <p class="mt-3">お名前</p>
-        <div>
-            <input class="form-control w-100 mt-1" name="name" placeholder="" required>
-        </div>
-        <p class="mt-3">お弁当の個数</p>
-        <div>
-            <input class="form-control w-100 mt-1" name="count" required>
-        </div>
-        <p class="mt-3">お弁当のメニュー</p>
-        <div>
-            <input class="form-control w-100 mt-1" name="menu" required>
-        </div>
-        <input type="submit" class="mt-4 btn btn-primary" value="送信">
-    </form>
+    <section class="container">
+        <form class="w-75 mx-auto">
+            <p class="mt-3 order-item required">お名前</p>
+            <div>
+                <input class="form-control w-100 mt-1" name="name" placeholder="" required>
+            </div>
+            <p class="mt-3 order-item required">お弁当の個数</p>
+            <div>
+                <input class="form-control w-100 mt-1" name="count" required>
+            </div>
+            <p class="mt-3 order-item required">お弁当のメニュー</p>
+            <div>
+                <input class="form-control w-100 mt-1" name="menu" required>
+            </div>
+            <p class="mt-3 order-item required">その他ご要望</p>
+            <div>
+                <input class="form-control w-100 mt-1" name="requirement" placeholder="「12:30までに配達希望」など">
+            </div>
+            <section class="submit">
+                <input type="submit" class="mt-5 btn btn-primary submit-btn" value="送信">
+            </section>
+        </form>
+    </section>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -66,7 +110,8 @@
                 const name    = $('input[name="name"]').val();
                 const count = $('input[name="count"]').val();
                 const menu  = $('input[name="menu"]').val();
-                const msg = `${name}\n${count}\n${menu}`;
+                const require  = $('input[name="requirement"]').val();
+                const msg = `${name}\n${count}\n${menu}\n${require}`;
                 sendText(msg);
                 return false;
             });
