@@ -6,101 +6,24 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
-    <style>
-        .container {
-            max-width: 640px;
-            width: 100vw;
-        }
-
-        .order-item {
-            font-weight: bold;
-            margin-bottom: 0.3rem;
-        }
-        .order-item.required:after {
-            background-color: #db4f43;
-            border-radius: 3px;
-            content: "必須";
-            color: #ffffff;
-            font-weight: normal;
-            display: inline-block;
-            margin-left: 5px;
-            padding-right: 5px;
-            padding-left: 5px;
-            line-height: 20px;
-            font-size: 11px;
-            text-align: center;
-            vertical-align: top;
-        }
-
-        .button-area {
-            width: 85%;
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 5px;
-        }
-
-        .button-group > * {
-            flex: 1;
-        }
-        
-        .confirm-btn {
-            display: inline-block;
-            background-color: #2daaff;
-            border-color: #2daaff;
-        }
-
-        .back-btn {
-            display: inline-block;
-            color: #2daaff;
-            border-color: #2daaff;
-        }
-
-        .submit-btn {
-            display: inline-block;
-            background-color: #2daaff;
-            border-color: #2daaff;
-        }
-
-        .hide {
-            display: none;
-        }
-    </style>
 </head>
 <body>
 
-    <section class="container">
-        <form class="w-75 mx-auto">
-            <p class="mt-3 order-item required">お名前</p>
-            <div>
-                <input class="form-control w-100 mt-1" name="name" placeholder="" required>
-            </div>
-            <p class="mt-3 order-item required">お弁当の個数</p>
-            <div>
-                <input class="form-control w-100 mt-1" name="count" required>
-            </div>
-            <p class="mt-3 order-item required">お弁当のメニュー</p>
-            <div>
-                <input class="form-control w-100 mt-1" name="menu" required>
-            </div>
-            <p class="mt-3 order-item">その他要望</p>
-            <div>
-                <textarea class="form-control w-100 mt-1" name="request"></textarea>
-            </div>
-            <section class="button-area mt-5">
-                <div class="button-group confirm-area">
-                    <button type="button" class="btn btn-primary confirm-btn">確認</button>
-                </div>
-                <div class="button-group submit-area hide">
-                    <button type="button" class="btn btn-outline-primary back-btn">入力画面に戻る</button>
-                    <button type="submit" class="btn btn-primary submitbtn">送信</button>
-                </div>
-            </section>
-        </form>
-    </section>
+    <form class="w-75 mx-auto">
+        <p class="mt-3">お名前</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="name" placeholder="" required>
+        </div>
+        <p class="mt-3">お弁当の個数</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="count" required>
+        </div>
+        <p class="mt-3">お弁当のメニュー</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="menu" required>
+        </div>
+        <input type="submit" class="mt-4 btn btn-primary" value="送信">
+    </form>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -108,45 +31,23 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <script>
-        
+
         $(document).ready(function () {
-        // liffId: LIFF URL "https://liff.line.me/xxx"のxxxに該当する箇所
-        // LINE DevelopersのLIFF画面より確認可能
-        var liffId = "2001825075-pmjJnbaR";
-        console.log(`init liff, ID : ${liffId}`);
-        initializeLiff(liffId);
-    })
-    
+            const liffId = "2001825075-pmjJnbaR";
+            initializeLiff(liffId);
+        })
+
         function initializeLiff(liffId) {
-            liff
-            .init({
+            liff.init({
                 liffId: liffId
-            })
-            .then(() => {
-                // Webブラウザからアクセスされた場合は、LINEにログインする
-                if (!liff.isInClient() && !liff.isLoggedIn()) {
-                    window.alert("LINEアカウントにログインしてください。");
-                    liff.login({redirectUri: location.href});
-                }else{
-                    console.log('Login Success');
-                }
-            })
-            .catch((err) => {
+            }).then(() => {
+                initializeApp();
+            }).catch((err) => {
                 console.log('LIFF Initialization failed ', err);
             });
         }
+
         function sendText(text) {
-            if (!liff.isInClient()) {
-                shareTargetPicker(text);
-            } else {
-                sendMessages(text);
-            }
-        }
-        
-        
-        // LINEトーク画面上でメッセージ送信
-        function sendMessages(text) {
-            console.log('in sendMessages()');
             liff.sendMessages([{
                 'type': 'text',
                 'text': text
@@ -156,75 +57,21 @@
                 window.alert('Failed to send message ' + error);
             });
         }
-        
-        // Webブラウザからメッセージ送信
-        function shareTargetPicker(text) {
-            console.log('in shareTargetPicker');
-            liff.shareTargetPicker([{
-                'type': 'text',
-                'text': text
-            }]).catch((error) => {
-                console.log(error);
-                window.alert('Failed to send message ' + error);
-            });
-        }
-        function enableForm() {
-            $("form input,textarea").each(function () {
-                $(this).prop('disabled', false);  
-            });
-        }
 
-        function disableForm() {
-            $("form input,textarea").each(function () {
-                $(this).prop('disabled', true);  
+        const params = (new URL(document.location)).searchParams;
+        const key = params.get('key');
+
+        $(function () {
+            $('form').submit(function () {
+                const name    = $('input[name="name"]').val();
+                const count = $('input[name="count"]').val();
+                const menu  = $('input[name="menu"]').val();
+                const msg = `${name}\n${count}\n${menu}`;
+                sendText(msg);
+                return false;
             });
-        }
-            
-        $(".confirm-btn").on("click", () => {
-            let canSubmit = true;
-            $("form input,textarea").filter("[required]:visible").each(function() {
-                // Clear All validations
-                $(this).removeClass('is-invalid');
-                $(this).nextAll('.invalid-feedback').remove();
-
-                if($(this).val() == '') {
-                    canSubmit = false;
-                    $(this).addClass('is-invalid');
-                    $(this).parent().append(`<div class="invalid-feedback">未入力です。</div>`);
-                } else {
-                    $(this).removeClass('is-invalid');
-                    $(this).nextAll('.invalid-feedback').remove();
-                }
-            });
-
-            if (canSubmit) {
-                $(".confirm-area").addClass("hide");
-                $(".submit-area").removeClass("hide");
-
-                disableForm();
-            }
         });
 
-        $(".back-btn").on("click", () => {
-            $(".confirm-area").removeClass("hide");
-            $(".submit-area").addClass("hide");
-
-            enableForm();
-        });
-
-        $('form').on("submit", function () {
-            const name    = $('input[name="name"]').val();
-            const count = $('input[name="count"]').val();
-            const menu  = $('input[name="menu"]').val();
-            const request  = $('textarea[name="request"]').val();
-            const msg = `${name}\n${count}\n${menu}\n${request}`;
-            sendText(msg);
-
-            $(".confirm-area").removeClass("hide");
-            $(".submit-area").addClass("hide");
-            enableForm();
-            window.alert("ご注文ありがとうございました");
-        });
     </script>
 
 </body>
