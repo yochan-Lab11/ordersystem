@@ -217,7 +217,7 @@
             const count = $('input[name="count"]').val();
             const menu  = $('input[name="menu"]').val();
             const request  = $('textarea[name="request"]').val();
-            const msg = [name, count, menu, request].join('\n');
+            const msg = `${name}\n${count}\n${menu}\n${request}`;
             sendText(msg);
 
             $(".confirm-area").removeClass("hide");
