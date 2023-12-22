@@ -115,14 +115,23 @@
         })
 
         function initializeLiff(liffId) {
-            liff.init({
-                liffId: liffId
-            }).then(() => {
-                initializeApp();
-            }).catch((err) => {
-                console.log('LIFF Initialization failed ', err);
-            });
-        }
+            liff
+        .init({
+            liffId: liffId
+        })
+        .then(() => {
+            // Webブラウザからアクセスされた場合は、LINEにログインする
+            if (!liff.isInClient() && !liff.isLoggedIn()) {
+                window.alert("LINEアカウントにログインしてください。");
+                liff.login({redirectUri: location.href});
+            }else{
+                console.log('Login Success');
+            }
+        })
+        .catch((err) => {
+            console.log('LIFF Initialization failed ', err);
+        });
+}
 
         function sendText(text) {
             liff.sendMessages([{
