@@ -89,14 +89,24 @@
                 <input class="form-control w-100 mt-1" name="department_name" placeholder="例：「〇番窓口」「〇〇課〇階」など" required>
             </div>
 
+            <p class="mt-3 order-item required">お弁当のメニュー</p>
+            <div>
+                <select class="form-control w-100 mt-1" name="menu" required>
+                    <option value="">選択して下さい</option>
+                </select>
+            </div>
+
+            <p class="mt-3 order-item required">お弁当のサイズ</p>
+            <div>
+                <select class="form-control w-100 mt-1" name="size" required>
+                    <option value="大盛">大盛</option>
+                    <option value="小盛">小盛</option>
+                </select>
+            </div>
+
             <p class="mt-3 order-item required">お弁当の個数</p>
             <div>
                 <input class="form-control w-100 mt-1" name="count" required>
-            </div>
-
-            <p class="mt-3 order-item required">お弁当のメニュー</p>
-            <div>
-                <input class="form-control w-100 mt-1" name="menu" required>
             </div>
 
             <p class="mt-3 order-item">その他要望</p>
@@ -134,6 +144,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+
+    <script src="./menu.js"></script>
     <script>
         
         $(document).ready(function () {
@@ -142,6 +154,13 @@
         var liffId = "2001825075-pmjJnbaR";
         console.log(`init liff, ID : ${liffId}`);
         initializeLiff(liffId);
+
+        $.each(getLunchBoxList(), (_, name) => {
+            $('select[name="menu"]').append($('<option>', { 
+                value: name,
+                text : name,
+            }));
+        });
     })
     
         function initializeLiff(liffId) {
@@ -209,12 +228,21 @@
             
         $(".confirm-btn").on("click", () => {
             let canSubmit = true;
-            $("form input,textarea").filter("[required]:visible").each(function() {
+            $("form input,textarea,select").filter("[required]:visible").each(function() {
                 // Clear All validations
                 $(this).removeClass('is-invalid');
                 $(this).nextAll('.invalid-feedback').remove();
 
-                if($(this).val() == '') {
+                let val = ((elem) => {
+                    const tagName = $(elem).prop("tagName").toLowerCase();
+                    if (tagName === 'select') {
+                        return $(elem).find(":selected").val();
+                    } else {
+                        return $(elem).val();
+                    }
+                })(this);
+
+                if([null, undefined, ''].includes(val)) {
                     canSubmit = false;
                     $(this).addClass('is-invalid');
                     $(this).parent().append(`<div class="invalid-feedback">未入力です。</div>`);
@@ -254,12 +282,16 @@
                     'name': 'department_name',
                 },
                 {
-                    'element': 'input',
-                    'name': 'count',
+                    'element': 'select',
+                    'name': 'menu',
+                },
+                {
+                    'element': 'select',
+                    'name': 'size',
                 },
                 {
                     'element': 'input',
-                    'name': 'menu',
+                    'name': 'count',
                 },
                 {
                     'element': 'textarea',
@@ -273,7 +305,13 @@
            
             const values = [];
             for (const item of items) {
-                values.push($(`${item['element']}[name="${item['name']}"]`).val());
+                const elem = $(`${item['element']}[name="${item['name']}"]`);
+                const tagName = $(elem).prop("tagName").toLowerCase();
+                if (tagName === 'select') {
+                    values.push($(elem).find(":selected").val());
+                } else {
+                    values.push($(elem).val());
+                }
             }
             const msg = values.join('\n');
             sendText(msg);
