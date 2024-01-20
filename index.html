@@ -381,7 +381,7 @@
                     const bigSize = Number($('input.big-size', this).val()) || 0;
                     const sum = normalSize + bigSize;
 
-                    values.push(normalSize, bigSize);
+                    values.push(bigSize, normalSize);
                     sums.push(sum);
                 });
 
