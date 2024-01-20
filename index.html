@@ -51,14 +51,14 @@
 
         .select-area {
             display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 10px;
         }
 
-        .sum-area {
-            display: flex;
-        }
-
-        .sum-area > label {
-            width: 25%;
+        .select-area > * {
+            flex: 1;
+            text-align: center;
         }
 
         .button-area {
@@ -120,19 +120,19 @@
             </div>
 
             <!-- お弁当のメニュー -->
-            <div id="menu">
+            <div id="menu" class="mt-3">
+                <div class="select-area">
+                   <span class="w-100 order-item">お弁当メニュー名</span>
+                   <span class="w-100 order-item">普通盛</span>
+                   <span class="w-100 order-item">大盛</span>
+                </div>
             </div>
 
-            <p class="mt-3 order-item">合計数量</p>
-            <div class="sum-area normal-size-total">
-                <label class="mt-2 ml-2">普通盛</label>
-                <span class="mt-2 ml-2">0</span>
+            <div class="select-area mt-1">
+                <span class="w-100 order-item">合計数量</span>
+                <span class="w-100 normal-size-total">0</span>
+                <span class="w-100 big-size-total">0</span>
             </div>
-            <div class="sum-area big-size-total">
-                <label class="mt-2 ml-2">大盛</label>
-                <span class="mt-2 ml-2">0</span>
-            </div>
-
 
             <p class="mt-3 order-item">その他要望</p>
             <div>
@@ -243,14 +243,12 @@
         // 弁当の普通盛と大盛の input タグを作成します
         $(document).ready(function () {
             $.each(getLunchBoxList(), (_, name) => {
-                const elem = $('<div>');
+                const elem = $('<div>').addClass('select-area input-area');
                 const title = $('<p>').addClass('mt-3 order-item item-name').text(name);
                 elem.append(title);
 
-                const createSelect = (labelText, inputClass) => {
-                    const div = $('<div>').addClass('select-area');
-                    const label = $(`<label>${labelText}</label>`).addClass('mt-2 ml-2').css('width', '30%');
-                    div.append(label);
+                const createSelect = (inputClass) => {
+                    const div = $('<div>');
                     const input = $(
                         '<input type="tel" pattern="[1-9][0-9]+" class="form-control w-100 mt-1" name="count" value="0" min="0">'
                     );
@@ -260,8 +258,8 @@
                     return div;
                 };
 
-                const normal_size = createSelect('普通盛', 'normal-size');
-                const big_size = createSelect('大盛', 'big-size');
+                const normal_size = createSelect('normal-size');
+                const big_size = createSelect('big-size');
 
                 elem.append(normal_size);
                 elem.append(big_size);
@@ -286,7 +284,7 @@
                         }
                     });
 
-                    $(`.${totalClass} > span`).text(total);
+                    $(`.${totalClass}`).text(total);
                 });
             };
 
@@ -376,30 +374,18 @@
 
             const getBentoValues = () => {
                 const values = [];
+                const sums = [];
 
-                $('#menu > div').each(function () {
-                    const title = $('.item-name', this).text();
+                $('#menu > div.input-area').each(function () {
                     const normalSize = Number($('input.normal-size', this).val()) || 0;
                     const bigSize = Number($('input.big-size', this).val()) || 0;
+                    const sum = normalSize + bigSize;
 
-                    values.push(title, normalSize, bigSize);
+                    values.push(bigSize, normalSize);
+                    sums.push(sum);
                 });
 
-                const normalSizeTotal = values.filter((value, index) => {
-                    return (index % 3 === 1);
-                }).reduce((accumulator, currentValue) => {
-                    return accumulator + currentValue
-                }, 0);
-
-                const bigSizeTotal = values.filter((value, index) => {
-                    return (index % 3 === 2);
-                }).reduce((accumulator, currentValue) => {
-                    return accumulator + currentValue
-                }, 0);
-
-                values.push('合計数量', normalSizeTotal, bigSizeTotal);
-
-                return values;
+                return [...values, ...sums];
             };
 
             const createMessage = () => {
