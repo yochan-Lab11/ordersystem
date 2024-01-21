@@ -131,7 +131,7 @@
 
             <p class="mt-3 order-item">その他要望</p>
             <div>
-                <textarea class="form-control w-100 mt-1" name="request"></textarea>
+                <textarea class="form-control w-100 mt-1 cancel-enter" name="request"></textarea>
             </div>
 
             <p class="mt-3 order-item required">受取日</p>
@@ -339,7 +339,17 @@
 
             enableForm();
         });
+        /* -------------------------------------------------------------------------- */
 
+        /**
+         * 改行を禁止にする
+         */
+
+        $('.cancel-enter').on('keydown',  (e) => {
+            if (e.key == 'Enter') {
+                return false;
+            }
+        });
         /* -------------------------------------------------------------------------- */
 
         /**
