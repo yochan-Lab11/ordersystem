@@ -49,6 +49,23 @@
             vertical-align: top;
         }
 
+        .title-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .title-area > *:first-child {
+            width: 60%;
+            text-align: left;
+            padding-right: 5px;
+        }
+
+        .title-area > *:not(:first-child) {
+            width: 20%;
+            text-align: center;
+        }
+
         .select-area {
             display: flex;
             align-items: center;
@@ -56,15 +73,13 @@
             column-gap: 10px;
         }
 
-        .select-area > * {
-            flex: 1;
-        }
-
         .select-area > *:first-child {
+            width: 50%;
             text-align: left;
         }
 
         .select-area > *:not(:first-child) {
+            flex: 1;
             text-align: center;
         }
 
@@ -128,11 +143,11 @@
 
             <!-- お弁当のメニュー -->
             <div id="menu" class="mt-3">
-                <div class="select-area">
-                   <span class="w-100 order-item">お弁当メニュー名</span>
-                   <span class="w-100 order-item">普通盛</span>
-                   <span class="w-100 order-item">大盛</span>
-                   <span class="w-100 order-item">合計</span>
+                <div class="title-area">
+                   <span class="order-item">お弁当メニュー名</span>
+                   <span class="order-item">普通盛</span>
+                   <span class="order-item">大盛</span>
+                   <span class="order-item">合計</span>
                 </div>
             </div>
 
