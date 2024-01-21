@@ -363,18 +363,19 @@
 
             const getBentoValues = () => {
                 const values = [];
-                const sums = [];
+                let normalSizeSum = 0;
+                let bigSizeSum = 0;
 
                 $('#menu > div.input-area').each(function () {
                     const normalSize = Number($('input.normal-size', this).val()) || 0;
                     const bigSize = Number($('input.big-size', this).val()) || 0;
-                    const sum = normalSize + bigSize;
+                    normalSizeSum += normalSize;
+                    bigSizeSum += bigSize;
 
                     values.push(bigSize, normalSize);
-                    sums.push(sum);
                 });
 
-                return [...values, ...sums];
+                return [...values, bigSizeSum, normalSizeSum];
             };
 
             const createMessage = () => {
