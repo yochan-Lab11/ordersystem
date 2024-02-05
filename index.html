@@ -405,12 +405,16 @@
                     normalSizeSum += normalSize;
                     bigSizeSum += bigSize;
 
-                    values.push(`${name} 大盛 ${bigSize}個 普通 ${normalSize}個`);
+                    values.push(name);
+                    values.push(`大盛 ${bigSize}個 普通 ${normalSize}個`);
                 });
 
-                const sum = `合計 大盛 ${bigSizeSum}個 普通 ${normalSizeSum}個`;
+                const sum = `大盛 ${bigSizeSum}個 普通 ${normalSizeSum}個`;
 
-                return [...values, sum];
+                values.push('合計');
+                values.push(sum);
+
+                return values;
             };
 
             const createMessage = () => {
