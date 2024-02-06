@@ -399,15 +399,22 @@
                 let bigSizeSum = 0;
 
                 $('#menu > div.input-area').each(function () {
+                    const name = $('.item-name', this).text();
                     const normalSize = Number($('input.normal-size', this).val()) || 0;
                     const bigSize = Number($('input.big-size', this).val()) || 0;
                     normalSizeSum += normalSize;
                     bigSizeSum += bigSize;
 
-                    values.push(bigSize, normalSize);
+                    values.push(name);
+                    values.push(`普通 ${normalSize}個 大盛 ${bigSize}個`);
                 });
 
-                return [...values, bigSizeSum, normalSizeSum];
+                const sum = `普通 ${normalSizeSum}個 大盛 ${bigSizeSum}個`;
+
+                values.push('合計');
+                values.push(sum);
+
+                return values;
             };
 
             const createMessage = () => {
