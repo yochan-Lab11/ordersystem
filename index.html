@@ -66,6 +66,12 @@
             text-align: center;
         }
 
+        .invalid-bento {
+            margin-top: 0;
+            font-size: 90%;
+            font-weight: bold;
+        }
+
         .select-area {
             display: flex;
             align-items: center;
@@ -154,6 +160,7 @@
                    <span class="order-item">大盛</span>
                    <span class="order-item">合計</span>
                 </div>
+                <div class="invalid-feedback invalid-bento">お弁当の個数が未入力です。</div>
             </div>
 
             <p class="mt-3 order-item">その他要望</p>
@@ -328,6 +335,8 @@
             
         $(".confirm-btn").on("click", () => {
             let canSubmit = true;
+
+            // 入力必須項目を確認します
             $("form input,textarea,select").filter("[required]:visible").each(function() {
                 // Clear All validations
                 $(this).removeClass('is-invalid');
@@ -352,11 +361,30 @@
                 }
             });
 
+            // 弁当の合計数を確認します
+            $("#menu .title-area").removeClass('is-invalid');
+            const values = getBentoValues();
+            sum = (
+                values
+                    .filter(value => value['name'] === '合計')
+                    .reduce((accumulator, currentValue) => accumulator + currentValue['normalSize'] + currentValue['bigSize'], 0)
+            );
+
+            if (sum === 0) {
+                $("#menu .title-area").addClass('is-invalid');
+                canSubmit = false;
+            }
+
             if (canSubmit) {
                 $(".confirm-area").addClass("hide");
                 $(".submit-area").removeClass("hide");
 
                 disableForm();
+            } else {
+                window.scroll({
+                    top: 0,
+                    behavior: "smooth",
+                });
             }
         });
 
@@ -382,6 +410,48 @@
         /**
          * フォーム送信処理
          */
+
+        const getBentoValues = () => {
+            const values = [];
+            let normalSizeSum = 0;
+            let bigSizeSum = 0;
+
+            $('#menu > div.input-area').each(function () {
+                const name = $('.item-name', this).text();
+                const normalSize = Number($('input.normal-size', this).val()) || 0;
+                const bigSize = Number($('input.big-size', this).val()) || 0;
+                normalSizeSum += normalSize;
+                bigSizeSum += bigSize;
+
+                values.push({
+                    'name': name,
+                    'normalSize': normalSize,
+                    'bigSize': bigSize,
+                });
+            });
+
+            values.push({
+                'name': '合計',
+                'normalSize': normalSizeSum,
+                'bigSize': bigSizeSum,
+            });
+            return values;
+        };
+
+        const formatBentoValues = (values) => {
+            const lines = [];
+            for (const value of values) {
+                const name = value['name'];
+                const normalSize = value['normalSize'];
+                const bigSize = value['bigSize'];
+
+                lines.push(name);
+                lines.push(`普通 ${normalSize}個 大盛 ${bigSize}個`);
+            }
+
+            return lines;
+        };
+
         $(document).ready(() => {
             const getValues = (items) => {
                 const values = [];
@@ -398,29 +468,6 @@
                 return values;
             };
 
-            const getBentoValues = () => {
-                const values = [];
-                let normalSizeSum = 0;
-                let bigSizeSum = 0;
-
-                $('#menu > div.input-area').each(function () {
-                    const name = $('.item-name', this).text();
-                    const normalSize = Number($('input.normal-size', this).val()) || 0;
-                    const bigSize = Number($('input.big-size', this).val()) || 0;
-                    normalSizeSum += normalSize;
-                    bigSizeSum += bigSize;
-
-                    values.push(name);
-                    values.push(`普通 ${normalSize}個 大盛 ${bigSize}個`);
-                });
-
-                const sum = `普通 ${normalSizeSum}個 大盛 ${bigSizeSum}個`;
-
-                values.push('合計');
-                values.push(sum);
-
-                return values;
-            };
 
             const createMessage = () => {
                 let values = [];
@@ -456,7 +503,7 @@
                 ];
 
                 values = [...values, ...getValues(itemsBeforeBentos)];
-                values = [...values, ...getBentoValues()];
+                values = [...values, ...formatBentoValues(getBentoValues())];
                 values = [...values, ...getValues(itemsAfterBentos)];
 
                 return values.join('\n');
