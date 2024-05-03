@@ -1,0 +1,482 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お弁当ご注文フォーム</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+    <style>
+        body {
+            background-image: url("./background_bento_version.webp");
+            background-position: top;
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                background-size: 150%;
+            }
+        }
+
+        .container {
+            max-width: 640px;
+            width: 100vw;
+            background: white;
+            opacity: 0.9;
+        }
+
+        .title {
+            text-align: center;
+        }
+        
+        .order-item {
+            font-weight: bold;
+            margin-bottom: 0.1rem;
+        }
+        .order-item.required:after {
+            background-color: #db4f43;
+            border-radius: 3px;
+            content: "必須";
+            color: #ffffff;
+            font-weight: normal;
+            display: inline-block;
+            margin-left: 5px;
+            padding-right: 5px;
+            padding-left: 5px;
+            line-height: 20px;
+            font-size: 11px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .title-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .title-area > *:first-child {
+            width: 60%;
+            text-align: left;
+            padding-right: 5px;
+        }
+
+        .title-area > *:not(:first-child) {
+            width: 20%;
+            text-align: center;
+        }
+
+        .select-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 10px;
+        }
+
+        .select-area > *:first-child {
+            width: 50%;
+            text-align: left;
+        }
+
+        .select-area > *:not(:first-child) {
+            flex: 1;
+            text-align: center;
+        }
+
+        .button-area {
+            width: 85%;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .button-group > * {
+            flex: 1;
+        }
+        
+        .confirm-btn {
+            display: inline-block;
+            background-color: #2daaff;
+            border-color: #2daaff;
+        }
+
+        .back-btn {
+            display: inline-block;
+            color: #2daaff;
+            border-color: #2daaff;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            background-color: #2daaff;
+            border-color: #2daaff;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="container">
+        <h3 class="title pt-5">お弁当ご注文フォーム</h3>
+            <form class="w-75 mx-auto">
+                <p class="mt-3">
+                <strong>当日受付は9:30まで</strong>となっております。</br>
+                <strong>9:30以降のご注文につきましては、お電話にてご確認ください。</strong></br>
+                ※お急ぎ・ご相談の場合もお電話ください。</br></br>
+                <strong>電話番号</br>担当直通：080-3691-0873</br>はたらくラボ久々知：06-6493-5335</strong>
+                <p class="mt-3 order-item required">会社・施設名</p>
+                <div>
+                    <input class="form-control w-100 mt-1" name="company_name" placeholder="" required>
+                </div>
+                <p class="mt-3 order-item required">部署名（ない場合は「なし」とご入力ください）</p>
+                <div>
+                    <input class="form-control w-100 mt-1" name="department_name" placeholder="例：「〇〇課△△階」「〇番窓口」など" required>
+                </div>
+                <p class="mt-3 order-item required">お名前</p>
+                <div>
+                    <input class="form-control w-100 mt-1" name="name" placeholder="" required>
+                </div>
+    
+                <p class="mt-3 order-item required">電話番号</p>
+                <div>
+                    <input type="tel" pattern="[0-9]{11}" class="form-control w-100 mt-1" name="tel_no" placeholder="" required>
+                </div>
+                <!-- お弁当のメニュー -->
+                <div id="menu" class="mt-3">
+                    <div class="title-area">
+                       <span class="order-item">お弁当メニュー名</span>
+                       <span class="order-item">普通盛</span>
+                       <span class="order-item">大盛</span>
+                       <span class="order-item">合計</span>
+                    </div>
+                </div>
+    
+                <p class="mt-3 order-item">その他ご要望</p>
+                <div>
+                    <textarea class="form-control w-100 mt-1 cancel-enter" name="request" placeholder="例：11時45分までに配達希望など"></textarea>
+                </div>
+    
+                <p class="mt-3 order-item required">受取日</p>
+                <div>
+                    <input type="text" class="form-control w-100 mt-1" name="receipt_date" required>
+                </div>
+    
+                <p class="mt-3">
+                <strong>【注意事項】</strong></br>
+                ・定休日：土日祝</br>
+                ・日替わり弁当1つ５５０円(税込み) 、スイーツセット(日替わり弁当＋スイーツ)は１つ７００円(税込み)となります。</br>
+                ※申し訳ありませんが、スイーツ単品の注文は承っておりません。スイーツが必要な方はスイーツセットをご注文ください。</br>
+                ・ご注文後のキャンセルは全額いただきます。</br>
+                ・天候や交通事情等により、お届け希望時間に沿えない可能性もございますのであらかじめご了承ください。
+                </p>
+    
+                <section class="button-area mt-5 pb-5">
+                    <div class="button-group confirm-area">
+                        <button type="button" class="btn btn-primary confirm-btn">確認</button>
+                    </div>
+                    <div class="button-group submit-area hide">
+                        <button type="button" class="btn btn-outline-primary back-btn">入力画面に戻る</button>
+                        <button type="submit" class="btn btn-primary submitbtn">送信</button>
+                    </div>
+                </section>
+            </form>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://rawgit.com/jquery/jquery-ui/master/ui/i18n/datepicker-ja.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+
+    <script src="./menu.js"></script>
+    <script>
+        
+        //$(document).ready(function () {
+            // liffId: LIFF URL "https://liff.line.me/xxx"のxxxに該当する箇所
+            // LINE DevelopersのLIFF画面より確認可能
+            //var liffId = "2002180924-Mkw799g3";
+            //console.log(`init liff, ID : ${liffId}`);
+            //initializeLiff(liffId);
+        //});
+    
+        function initializeLiff(liffId) {
+            liff
+            .init({
+                liffId: liffId
+            })
+            .then(() => {
+                // Webブラウザからアクセスされた場合は、LINEにログインする
+                if (!liff.isInClient() && !liff.isLoggedIn()) {
+                    window.alert("LINEアカウントにログインしてください。");
+                    liff.login({redirectUri: location.href});
+                }else{
+                    console.log('Login Success');
+                }
+            })
+            .catch((err) => {
+                console.log('LIFF Initialization failed ', err);
+            });
+        }
+        function sendText(text) {
+            if (!liff.isInClient()) {
+                shareTargetPicker(text);
+            } else {
+                sendMessages(text);
+            }
+        }
+        
+        
+        // LINEトーク画面上でメッセージ送信
+        function sendMessages(text) {
+            console.log('in sendMessages()');
+            liff.sendMessages([{
+                'type': 'text',
+                'text': text
+            }]).then(function () {
+                liff.closeWindow();
+            }).catch(function (error) {
+                window.alert('Failed to send message ' + error);
+            });
+        }
+        
+        // Webブラウザからメッセージ送信
+        function shareTargetPicker(text) {
+            console.log('in shareTargetPicker');
+            liff.shareTargetPicker([{
+                'type': 'text',
+                'text': text
+            }]).catch((error) => {
+                console.log(error);
+                window.alert('Failed to send message ' + error);
+            });
+        }
+
+        /* -------------------------------------------------------------------------- */
+
+        /**
+         * 弁当の入力項目の設定
+         */
+
+        // 弁当の普通盛と大盛の input タグを作成します
+        $(document).ready(function () {
+            $.each(getLunchBoxList(), (_, name) => {
+                const elem = $('<div>').addClass('select-area input-area');
+                const title = $('<p>').addClass(' mt-3 order-item item-name').text(name);
+                elem.append(title);
+
+                const createSelect = (inputClass) => {
+                    const input = $(
+                        '<input type="tel" pattern="[1-9][0-9]+" class="form-control w-100 mt-1" name="count" placeholder="0" min="0">'
+                    );
+                    input.addClass(inputClass);
+
+                    return input;
+                };
+
+                const normal_size = createSelect('normal-size');
+                const big_size = createSelect('big-size');
+
+                elem.append(normal_size);
+                elem.append(big_size);
+
+                elem.append($('<span>').addClass('total').text(0));
+
+                $('#menu').append(elem);
+            });
+
+            $('input[name="receipt_date"]').datepicker({
+                minDate: 0,
+            });
+        });
+
+        // 合計数量の計算処理を設定します
+        $(document).ready(() => {
+            $('.input-area').on('input', function() {
+                let total = 0;
+                $(this).children('input').each(function () {
+                    const value = Number($(this).val());
+                    if (Number.isInteger(value)) {
+                        total += value;
+                    }
+                });
+
+                $('.total', this).text(total);
+            });
+        });
+
+        /* -------------------------------------------------------------------------- */
+
+        /**
+         * フォームの確認画面の設定
+         */
+        function enableForm() {
+            $("form input,textarea").each(function () {
+                $(this).prop('disabled', false);  
+            });
+        }
+
+        function disableForm() {
+            $("form input,textarea").each(function () {
+                $(this).prop('disabled', true);  
+            });
+        }
+            
+        $(".confirm-btn").on("click", () => {
+            let canSubmit = true;
+            $("form input,textarea,select").filter("[required]:visible").each(function() {
+                // Clear All validations
+                $(this).removeClass('is-invalid');
+                $(this).nextAll('.invalid-feedback').remove();
+
+                let val = ((elem) => {
+                    const tagName = $(elem).prop("tagName").toLowerCase();
+                    if (tagName === 'select') {
+                        return $(elem).find(":selected").val();
+                    } else {
+                        return $(elem).val();
+                    }
+                })(this);
+
+                if([null, undefined, ''].includes(val)) {
+                    canSubmit = false;
+                    $(this).addClass('is-invalid');
+                    $(this).parent().append(`<div class="invalid-feedback">未入力です。</div>`);
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $(this).nextAll('.invalid-feedback').remove();
+                }
+            });
+
+            if (canSubmit) {
+                $(".confirm-area").addClass("hide");
+                $(".submit-area").removeClass("hide");
+
+                disableForm();
+            }
+        });
+
+        $(".back-btn").on("click", () => {
+            $(".confirm-area").removeClass("hide");
+            $(".submit-area").addClass("hide");
+
+            enableForm();
+        });
+        /* -------------------------------------------------------------------------- */
+
+        /**
+         * 改行を禁止にする
+         */
+
+        $('.cancel-enter').on('keydown',  (e) => {
+            if (e.key == 'Enter') {
+                return false;
+            }
+        });
+        /* -------------------------------------------------------------------------- */
+
+        /**
+         * フォーム送信処理
+         */
+        $(document).ready(() => {
+            const getValues = (items) => {
+                const values = [];
+                for (const item of items) {
+                    const elem = $(`${item['element']}[name="${item['name']}"]`);
+                    const tagName = $(elem).prop("tagName").toLowerCase();
+                    if (tagName === 'select') {
+                        values.push($(elem).find(":selected").val());
+                    } else {
+                        values.push($(elem).val());
+                    }
+                }
+
+                return values;
+            };
+
+            const getBentoValues = () => {
+                const values = [];
+                let normalSizeSum = 0;
+                let bigSizeSum = 0;
+
+                $('#menu > div.input-area').each(function () {
+                    const name = $('.item-name', this).text();
+                    const normalSize = Number($('input.normal-size', this).val()) || 0;
+                    const bigSize = Number($('input.big-size', this).val()) || 0;
+                    normalSizeSum += normalSize;
+                    bigSizeSum += bigSize;
+
+                    values.push(name);
+                    values.push(`普通 ${normalSize}個 大盛 ${bigSize}個`);
+                });
+
+                const sum = `普通 ${normalSizeSum}個 大盛 ${bigSizeSum}個`;
+
+                values.push('合計');
+                values.push(sum);
+
+                return values;
+            };
+
+            const createMessage = () => {
+                let values = [];
+
+                const itemsBeforeBentos = [
+                    {
+                        'element': 'input',
+                        'name': 'name',
+                    },
+                    {
+                        'element': 'input',
+                        'name': 'tel_no',
+                    },
+                    {
+                        'element': 'input',
+                        'name': 'company_name',
+                    },
+                    {
+                        'element': 'input',
+                        'name': 'department_name',
+                    },
+                ];
+
+                const itemsAfterBentos = [
+                    {
+                        'element': 'textarea',
+                        'name': 'request',
+                    },
+                    {
+                        'element': 'input',
+                        'name': 'receipt_date',
+                    },
+                ];
+
+                values = [...values, ...getValues(itemsBeforeBentos)];
+                values = [...values, ...getBentoValues()];
+                values = [...values, ...getValues(itemsAfterBentos)];
+
+                return values.join('\n');
+            };
+
+            $('form').on("submit", function () {
+                const msg = createMessage();
+                sendText(msg);
+
+                $(".confirm-area").removeClass("hide");
+                $(".submit-area").addClass("hide");
+                enableForm();
+                window.alert("ご注文ありがとうございました");
+                return false;
+            });
+        });
+    </script>
+
+</body>
+</html>
