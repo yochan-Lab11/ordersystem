@@ -509,7 +509,7 @@
                 return values.join('\n');
             };
 
-            $('form').on("submit", function () {
+            /* $('form').on("submit", function () {
                 const msg = createMessage();
                 sendText(msg);
 
@@ -517,7 +517,10 @@
                 $(".submit-area").addClass("hide");
                 enableForm();
                 window.alert("ご注文ありがとうございました");
-                return false;
+                return false; */
+                $('form').submit(function( event ) {
+                event.preventDefault();
+                $.post( 'https://script.google.com/macros/s/AKfycbwieAXFHmYEMVdNguBx36Ub2qK3gJ_83SDtJxptcCdH0y8ws45rPourdmVyhWGtxkklcA/exec', $('form').serialize() );
             });
         });
     </script>
